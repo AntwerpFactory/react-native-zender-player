@@ -107,7 +107,7 @@
     
     if (checkDebugEnabled!=nil) {
         BOOL debugEnabled = [config objectForKey:@"debugEnabled"];
-        NSLog(@"BOOL DebugEnabled : %@", debugEnabled ? @"Yes" : @"No");
+   //     NSLog(@"BOOL DebugEnabled : %@", debugEnabled ? @"Yes" : @"No");
         
         [[ZenderLogger shared] setLevel:ZenderLogger_LEVEL_DEBUG];
         [_player.config enableDebug:TRUE];
@@ -125,11 +125,14 @@
     if (_authentication == nil) { return ; }
     if (_config == nil) { return ; }
     
+    self.player.view.frame = self.frame;
+
     [_player start];
 }
 
 - (void)dealloc
 {
+    //NSLog(@"alloc dealloc");
     [_player stop];
     _player = nil;
 }

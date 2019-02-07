@@ -31,6 +31,28 @@ repositories {
 }
 
 dependencies {
+
+
     compile 'com.facebook.react:react-native:+'
+
+
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    // Include zender aars
+    compile fileTree(dir: "libs", include: ["*.aar"])
+
+    /*
+    // Added for local testing
+    // Extended feature support
+    // https://phenixrts.com/docs/android/#setup
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.6.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.6.1'
+
+    compile project(path: ':zender_core')
+    compile project(path: ':phenix-sdk')
+    compile project(path: ':zender_phenix')
+    */
+
 }
   

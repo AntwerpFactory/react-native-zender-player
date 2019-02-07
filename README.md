@@ -1,7 +1,7 @@
 # Description
 
-This repository provides a react-native wrapper around the Zender Player`.
-This is currently work in progress. Current version is 0.0.1
+This repository provides a react-native wrapper around the Zender Player. Current version is 0.0.2
+The react-native packages has several native dependencies. As these dependencies are not publicly available, they need to be manually added/installed.
 
 # Installation
 ## Add NPM Package
@@ -12,63 +12,12 @@ Currently this module is not publicly published yet.
 
 NOTE: 
 - installing it from a local directory through `npm link` or install from local directory breaks react-native scripts as they don't handle correctly symlinks.
-- install if from a github link `npm install gitgit+ssh://git@github.com:smalltownheroes/react-native-zender-player#v0.0.1`
+- install if from a github link `npm install git+ssh://git@github.com:smalltownheroes/react-native-zender-player#v0.0.2`
 
 ## Link the native package inside your own project
 
 `$ react-native link react-native-zender-player`
 
-## Configure cocoapods on your project
-The native dependencies of this project are provided as cocoapods. 
-As this package depends on several non-public cocoapods, this requires a bit more work than usual.
-
-### Install cocoapods (if needed)
-- install a recent ruby version
-- install the gem bundler `gem install bundler`
-- create a `Gemfile` :
-```
-source "http://rubygems.org"
-
-gem "cocoapods" , "~> 1.5.0"
-```
-- run `bundle install` to install cocoapods
-
-### Download the necessary pods locally
-`react-native-zender-player` depends on the Cocoapods `Zender` and `PhenixSdk`
-These need to installed locally. See instructions of each package on how to install.
-
-Note: don't forget to install `git-lfs` (git large file system support) if installing from github
-
-### Create/Extend a Podfile
-- in your `$PROJECTDIR/ios` create or extend a podfile
-- to create a blank one run `pod init`
-
-```
-ENV['COCOAPODS_DISABLE_STATS'] = "true"
-# Uncomment the next line to define a global platform for your project
-platform :ios, '10.0'
-
-target 'ZenderRNSample' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  #use_frameworks!
-
-  # Pods for ZenderRNSample
-  pod 'Zender/Core', :path => '/Users/patrick/dev/zender-player-sdk/zender-ios-player/sdk'
-  pod 'Zender/Phenix', :path => '/Users/patrick/dev/zender-player-sdk/zender-ios-player/sdk'
-  pod 'PhenixSdk' , :git => 'git@github.com:smalltownheroes/phenix-ios-sdk.git' , :branch => 'v2018-10-25'
-
-  target 'ZenderRNSampleTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
-```
-
-### Install the Pods
-- in your `$PROJECTDIR/ios` do a `pod install`
-
-Note: from now on open `YourProject.xcworkspace` instead of `YourProject.xcodeproj`
 
 ## Usage
 ```javascript
@@ -110,13 +59,104 @@ export default class App extends Component<Props> {
       style={{ flex: 1 }} />; // be sure to add flex:1 so the view appears full size
   }
 }
+```
 
+
+#iOS native setup
+
+## Configure cocoapods on your project
+The native dependencies of this project are provided as cocoapods. 
+As this package depends on several non-public cocoapods, this requires a bit more work than usual.
+
+### Install cocoapods (if needed)
+- install a recent ruby version
+- install the gem bundler `gem install bundler`
+- create a `Gemfile` :
+```
+source "http://rubygems.org"
+
+gem "cocoapods" , "~> 1.5.0"
+```
+- run `bundle install` to install cocoapods
+
+### Download the necessary pods locally
+`react-native-zender-player` depends on the Cocoapods `Zender` and `PhenixSdk`
+These need to installed locally. See instructions of each package on how to install.
+
+Note: don't forget to install `git-lfs` (git large file system support) if installing phenix-sdk from github
+
+### Create/Extend a Podfile
+- in your `$PROJECTDIR/ios` create or extend a podfile
+- to create a blank one run `pod init`
+
+```
+ENV['COCOAPODS_DISABLE_STATS'] = "true"
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+
+target 'ZenderRNSample' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  #use_frameworks!
+
+  # Pods for ZenderRNSample
+  pod 'Zender/Core', :path => '/Users/patrick/dev/zender-player-sdk/zender-ios-player/sdk'
+  pod 'Zender/Phenix', :path => '/Users/patrick/dev/zender-player-sdk/zender-ios-player/sdk'
+  pod 'PhenixSdk' , :git => 'git@github.com:smalltownheroes/phenix-ios-sdk.git' , :branch => 'v2018-10-25'
+
+  target 'ZenderRNSampleTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+```
+
+### Install the Pods
+- in your `$PROJECTDIR/ios` do a `pod install`
+
+Note: from now on open `YourProject.xcworkspace` instead of `YourProject.xcodeproj`
+
+#Android native setup
+## Base setup
+For android , all necessary files are included in the react-native library ; 
+
+- RNZenderPlayer depends on both `zender_core, zender_logger, zender_phenix` and the phenix-sdk .aar files
+- The buildToolsVersion is currently `28.0.3` , this can be changed in the android/build.gradle file of the module if necessary
+
+For reference Zender also depends on:
+```
+     implementation 'com.google.code.gson:gson:2.7'
+     implementation 'com.squareup.picasso:picasso:2.5.2'
+```
+
+Depending on your react-native version the config of your React Native project may require some tweaking.
+
+## Allow backup flag
+Depending on your React native version used, you may have to add the flag android:allowBackup to your app `AndroidManifest.xml`
+
+```
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
+     package="com.zenderrnsample">
+
+     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+     <application
++        tools:replace="android:allowBackup"
 
 ```
 
-# TODO
-- handle correct dealloc of view
-- add start/stop function to overcome the React Native View limitation
-- ability to pass JSON authentication
-- expose all zenderEvents required
-- android module setup
+## Android 9+ - Apache HTTP client deprecation
+Starting from Android 9 , android does not include the legacy org.http package anymore. This is currently required for the Zender Logger solution.
+To make it work you need to add the following to your React Native Android Manifest. More info at <https://developer.android.com/about/versions/pie/android-9.0-changes-28>
+
+
+`<uses-library android:name="org.apache.http.legacy" android:required="false"/>`
+
+## Soft-input pan
+Android has different ways of dealing with the focus when typing on the keyboard.
+React-Native by default uses `android:windowSoftInputMode="adjustResize">`. This setting resizes the view to allow for the keyboard.
+
+When using the keyboard in zender , we want a different behavior: scroll up the view instead of resizing . This is the equivalent of the `adjustPan` modus.
+To have the expected behavior Zender forces the softInputModus `adjustPan`
