@@ -12,10 +12,20 @@ class ZenderPlayerView extends React.Component {
     this.props.onZenderPlayerClose(event.nativeEvent);
   }
 
+  _onZenderPlayerQuizShareCode = (event) => {
+    if (!this.props.onZenderPlayerQuizShareCode) {
+      return;
+    }
+
+    // process raw event
+    this.props.onZenderPlayerQuizShareCode(event.nativeEvent);
+  }
+
   render() {
     return <RNZenderPlayer 
          {...this.props} 
          onIosZenderPlayerClose={this._onZenderPlayerClose} 
+         onIosZenderPlayerQuizShareCode={this._onZenderPlayerQuizShareCode} 
          // ^^ In the ZenderPlayerView we use onIosZenderPlayerClose to avoid conflict with the zender callbacks
     />
   }
@@ -25,7 +35,8 @@ class ZenderPlayerView extends React.Component {
 ZenderPlayerView.propTypes = {
   targetId: PropTypes.string,
   channelId: PropTypes.string,
-  onZenderPlayerClose: PropTypes.func // This is how we expose it to the client
+  onZenderPlayerClose: PropTypes.func, // This is how we expose it to the client
+  onZenderPlayerQuizShareCode: PropTypes.func // This is how we expose it to the client
 }
 
 ZenderPlayerView.defaultProps = {

@@ -11,6 +11,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,21 +61,13 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
          * This method maps the sending of the "onZenderPlayerClose" event to the JS "onZenderPlayerClose" function.
          */
 
-
         return MapBuilder.<String, Object>builder()
+                .put("onIosZenderPlayerQuizShareCode",
+                        MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onIosZenderPlayerQuizShareCode")))
                 .put("onIosZenderPlayerClose",
-                MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onIosZenderPlayerClose")))
+                        MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onIosZenderPlayerClose")))
                 .build();
 
-
-        /*
-        return MapBuilder.<String, Object>builder()
-                .put("onIosZenderPlayerClose", MapBuilder.of("registrationName", "onIosZenderPlayerClose"))
-                .build();
-                */
-
-
-//                 .put("onZenderPlayerClose", MapBuilder.of("registrationName", "onZenderPlayerClose"))
     }
 
 
@@ -245,8 +238,7 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
 
     }
 
-    // VideoPlayerView.java
-    private void dispatchOnEnd() {
+    private void dispatchOnZenderPlayerClose() {
 
         Log.d(TAG, "onZenderPlayerClose");
         WritableMap event = Arguments.createMap();
@@ -255,6 +247,40 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
         context.getJSModule(RCTEventEmitter.class).receiveEvent(
                 zenderPlayerView.getId(),
                 "onIosZenderPlayerClose",
+                event
+        );
+
+    }
+
+    private void dispatchOnZenderPlayerQuizShareCode(LinkedTreeMap linkedTreeMap) {
+
+        String shareCode = null;
+        String shareText = null;
+
+        if (linkedTreeMap.containsKey("shareCode")) {
+            shareCode = (String) linkedTreeMap.get("shareCode");
+        }
+
+        if (linkedTreeMap.containsKey("shareText")) {
+            shareText = (String) linkedTreeMap.get("shareText");
+        }
+
+        if (linkedTreeMap.containsKey("text")) {
+            shareText = (String) linkedTreeMap.get("text");
+        }
+
+        if (shareCode==null) {
+            return;
+        }
+
+        Log.d(TAG, "onZenderPlayerQuizShareCode"+shareCode);
+        WritableMap event = Arguments.createMap();
+        event.putString("shareCode",shareCode);
+        event.putString("shareText",shareText);
+
+        context.getJSModule(RCTEventEmitter.class).receiveEvent(
+                zenderPlayerView.getId(),
+                "onIosZenderPlayerQuizShareCode",
                 event
         );
 
@@ -338,7 +364,7 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
     @Override
     public void onZenderPlayerClose(com.google.gson.internal.LinkedTreeMap linkedTreeMap) {
 
-        dispatchOnEnd();
+        dispatchOnZenderPlayerClose();
     }
 
     @Override
@@ -653,6 +679,8 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
 
     @Override
     public void onZenderQuizShareCode(com.google.gson.internal.LinkedTreeMap linkedTreeMap) {
+
+        dispatchOnZenderPlayerQuizShareCode(linkedTreeMap);
 
     }
 

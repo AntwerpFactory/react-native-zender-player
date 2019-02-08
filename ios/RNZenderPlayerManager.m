@@ -14,6 +14,7 @@ RCT_EXPORT_VIEW_PROPERTY(config, NSDictionary)
 
 
 RCT_EXPORT_VIEW_PROPERTY(onIosZenderPlayerClose, RCTBubblingEventBlock);
+RCT_EXPORT_VIEW_PROPERTY(onIosZenderPlayerQuizShareCode, RCTBubblingEventBlock);
 
 // This gets executed everytime an element is rendered
 // The view dealloc function is called whenever it is not rendered

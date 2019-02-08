@@ -1,6 +1,6 @@
 # Description
 
-This repository provides a react-native wrapper around the Zender Player. Current version is 0.0.2
+This repository provides a react-native wrapper around the Zender Player. Current version is 0.0.3
 The react-native packages has several native dependencies. As these dependencies are not publicly available, they need to be manually added/installed.
 
 # Installation
@@ -12,7 +12,7 @@ Currently this module is not publicly published yet.
 
 NOTE: 
 - installing it from a local directory through `npm link` or install from local directory breaks react-native scripts as they don't handle correctly symlinks.
-- install if from a github link `npm install git+ssh://git@github.com:smalltownheroes/react-native-zender-player#v0.0.2`
+- install if from a github link `npm install git+ssh://git@github.com:smalltownheroes/react-native-zender-player#v0.0.3
 
 ## Link the native package inside your own project
 
@@ -48,6 +48,12 @@ export default class App extends Component<Props> {
     console.log('Zender Player Close Event');
   }
 
+  onZenderPlayerQuizShareCode(event) {
+    console.log('Zender Player Share code Event');
+    console.log('Share text: '+event.shareText);
+    console.log('Share code: '+event.shareCode);
+  }
+
   render() {
 
     return <ZenderPlayerView
@@ -56,6 +62,7 @@ export default class App extends Component<Props> {
       authentication = { zenderAuthentication }
       config = { zenderConfig }
       onZenderPlayerClose={ this.onZenderPlayerClose }
+      onZenderPlayerQuizShareCode={ this.onZenderPlayerQuizShareCode }
       style={{ flex: 1 }} />; // be sure to add flex:1 so the view appears full size
   }
 }
