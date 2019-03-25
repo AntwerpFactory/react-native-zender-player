@@ -1,6 +1,6 @@
 # Description
 
-This repository provides a react-native wrapper around the Zender Player. Current version is 0.0.3
+This repository provides a react-native wrapper around the Zender Player. Current version is 1.0.0
 The react-native packages has several native dependencies. As these dependencies are not publicly available, they need to be manually added/installed.
 
 # Installation
@@ -12,7 +12,7 @@ Currently this module is not publicly published yet.
 
 NOTE: 
 - installing it from a local directory through `npm link` or install from local directory breaks react-native scripts as they don't handle correctly symlinks.
-- install if from a github link `npm install git+ssh://git@github.com:smalltownheroes/react-native-zender-player#v0.0.3
+- install it from a github link `npm install git+ssh://git@github.com:smalltownheroes/react-native-zender-player#v1.0.0
 
 ## Link the native package inside your own project
 
@@ -167,3 +167,11 @@ React-Native by default uses `android:windowSoftInputMode="adjustResize">`. This
 
 When using the keyboard in zender , we want a different behavior: scroll up the view instead of resizing . This is the equivalent of the `adjustPan` modus.
 To have the expected behavior Zender forces the softInputModus `adjustPan`
+
+## Orientation
+The Zender player autorotates, if you don't want this behaviour you need to fix the app rotation
+
+## Changelog
+- 1.0.0: fixes background/foreground, connectionfeedback flex layout rendering, image fullwidth, allow auto-orientation
+- 0.0.3: react-native android version
+- 0.0.2: react-native ios version

@@ -87,6 +87,9 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
         zenderUserDevice = null;
         zenderAuthentication = null;
 
+        // We listen to lifecycle events to get resume/pause/destroy requests
+        reactContext.addLifecycleEventListener(this);
+
         return zenderPlayerView;
     }
 
@@ -234,6 +237,7 @@ public class RNZenderPlayerManager extends ViewGroupManager<ZenderPlayerView> im
             zenderPlayerView.release();
             zenderPlayerView = null;
         }
+
 
 
     }

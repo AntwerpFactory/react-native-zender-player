@@ -1,5 +1,5 @@
 .PHONY: dist
-VERSION=0.0.3
+VERSION=1.0.0
 PACKAGE_NAME=react-native-zender-player
 
 dist:
